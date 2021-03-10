@@ -9,49 +9,68 @@ def main():
         if choice == 1:
             create_account()
         elif choice == 2:
-            log_in()
+            account = log_in()
+            if account:
+                logged(account)
         elif choice == 0:
             print("Bye!")
             break
 
 
 def options():
-    print("""1. Create an account
-    2. Log into account
-    0. Exit""")
-    return int(input())
+    """Print options available to the logged out user"""
+
+    print("1. Create an account\n"
+          "2. Log into account\n"
+          "0. Exit")
+    choice = int(input())
+    return choice
 
 
 def create_account():
+    """Create new account and show info about it to the user"""
+
     account = Account()
-    print(f"""Your card has been created
-    Your card number:\n{account.card_number}
-    Your card PIN:\n{account.pin}""")
+    print("\nYour card has been created\n"
+          "Your card number:\n"
+          f"{account.card_number}\n"
+          "Your card PIN:\n"
+          f"{account.pin}\n")
 
 
 def log_in():
-    card_num = input("Enter your card number:\n")
+    """Log into the account"""
+
+    card_num = input("\nEnter your card number:\n")
     pin = input("Enter your PIN:\n")
 
-    if card_num in Account.accounts and pin == Account.accounts[card_num]:
-        print("You have successfully logged in!")
+    for account in Account.accounts:
+        print(account.card_number)
+        if account.card_number == card_num and account.pin == pin:
+            print("\nYou have successfully logged in!")
+            return account
 
-        while True:
-            print("""1. Balance
-            2. Log out
-            0. Exit""")
+    print("\nWrong card number or PIN!\n")
+    return False
 
-            choice = int(input())
-            if choice == 1:
-                pass
-            elif choice == 2:
-                print("You have successfully logged out!")
-                break
-            elif choice == 0:
-                print("Bye")
-                exit(0)
-    else:
-        print("Wrong card number or PIN!")
+
+def logged(account):
+    """Activity when user is logged in"""
+
+    while True:
+        print("\n1. Balance\n"
+              "2. Log out\n"
+              "0. Exit")
+
+        choice = int(input())
+        if choice == 1:
+            print("\nBalance:", account.balance)
+        elif choice == 2:
+            print("\nYou have successfully logged out!")
+            break
+        elif choice == 0:
+            print("\nBye")
+            exit(0)
 
 
 if __name__ == '__main__':

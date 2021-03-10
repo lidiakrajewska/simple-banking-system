@@ -3,38 +3,41 @@ import random
 
 class Account:
     """This class stores info about users' accounts and create new ones"""
-    accounts = {}  # store list of objects not {number : pin}
+    accounts = []
 
     def __init__(self):
-        self.pin = None
         self.card_number = self.generate_card_num()
+        self.pin = self.generate_pin()
         self.balance = 0
+        Account.accounts.append(self)
 
     def generate_pin(self):
-        """It generates 4 digit PIN"""
+        """Generate 4 digit PIN"""
         random.seed()
-        self.pin = ""
+        pin = ""
         for _ in range(4):
             n = random.randint(0, 9)
-            self.pin += str(n)
+            pin += str(n)
+        return pin
 
     def generate_card_num(self):
-        """It generates a card number that satisfies given conditions"""
+        """Generate a card number that satisfies given conditions"""
 
         while True:
             random.seed()
             number = "400000"
             for _ in range(10):
-                n = random.randint(0, 9)
-                number += str(n)
+                number += str(random.randint(0, 9))
 
-            if number not in Account.accounts:  # how to check it in a list?
-                self.generate_pin()
-                Account.accounts[number] = self.pin
+            for account in Account.accounts:
+                if account.card_number == number:
+                    break
+            else:
                 break
 
-        return int(number)
+        return number
 
     def check_balance(self):
-        """Checking the balance of the account"""
+        """Check the balance of the account"""
+
         print("Balance:", self.balance)
