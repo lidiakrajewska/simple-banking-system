@@ -3,6 +3,7 @@ import random
 
 class Account:
     """This class stores info about users' accounts and create new ones"""
+
     accounts = []
 
     def __init__(self):
@@ -13,31 +14,58 @@ class Account:
 
     def generate_pin(self):
         """Generate 4 digit PIN"""
+
         random.seed()
-        pin = ""
-        for _ in range(4):
-            n = random.randint(0, 9)
-            pin += str(n)
+        pin = "%04d" % random.randint(0, 9999)
         return pin
 
     def generate_card_num(self):
         """Generate a card number that satisfies given conditions"""
 
-        while True:
-            random.seed()
-            number = "400000"
-            for _ in range(10):
-                number += str(random.randint(0, 9))
+        # Bank Identification Number
+        bin_num = "400000"
 
+        while True:
+            # Creating Account Identifier number
+            random.seed()
+            ai_number = "%09d" % random.randint(0, 999999999)
+
+            # Card number
+            card_number = bin_num + ai_number
+            checksum = self.__luhn(card_number)
+            card_number += checksum
+
+            # Checking if it's not in use already
+            card_number = int(card_number)
             for account in Account.accounts:
-                if account.card_number == number:
+                if account.card_number == card_number:
                     break
             else:
                 break
 
-        return number
+        return card_number
 
     def check_balance(self):
         """Check the balance of the account"""
 
         print("Balance:", self.balance)
+
+    def __luhn(self, card_number):
+        """Calculates the checksum according to Luhn algorithm"""
+
+        card_number = list(card_number)
+
+        card_number = [int(i) for i in card_number]
+
+        for i in range(len(card_number)):
+            if i % 2 == 0:
+                card_number[i] = card_number[i] * 2
+
+            if card_number[i] > 9:
+                card_number[i] -= 9
+
+        control_num = sum(card_number)
+
+        checksum = 10 - (control_num % 10)
+
+        return str(checksum)

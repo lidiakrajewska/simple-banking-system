@@ -41,7 +41,7 @@ def create_account():
 def log_in():
     """Log into the account"""
 
-    card_num = input("\nEnter your card number:\n")
+    card_num = int(input("\nEnter your card number:\n"))
     pin = input("Enter your PIN:\n")
 
     for account in Account.accounts:
