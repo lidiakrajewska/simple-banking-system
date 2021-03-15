@@ -276,6 +276,18 @@ files:
     if __name__ == '__main__':
         BankingSystem('banking.banking').run_tests()
   learner_created: false
+- name: banking/database.py
+  visible: true
+  learner_created: true
+- name: banking/card.s3db
+  visible: true
+  learner_created: true
+- name: card.s3db
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/109/stages/593/implement#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Mon, 15 Mar 2021 22:07:00 UTC
 record: -1
